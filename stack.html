@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Project</title>
+
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 10px;
+    height: 300px;
+}
+
+.stack-box {
+    width: 100px;
+    height: 50px;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+input {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px;
+}
+
+#arrowBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#arrow {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #3498db;
+    border-width: 0 2px 2px 0;
+    transform: rotate(-45deg);
+}
+
+#topElement {
+    font-size: 16px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stack Project</h1>
+        <input type="text" id="inputItem" placeholder="Enter item">
+        <button id="pushBtn">Push</button>
+        <button id="popBtn">Pop</button>
+        <div class="stack">
+            <div id="arrowBox">
+                <div id="arrow"></div>
+                <div id="topElement">Top Element</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stack = [];
+let boxIndex = 0;
+
+document.getElementById("pushBtn").addEventListener("click", function () {
+    const inputItem = document.getElementById("inputItem");
+    const newItem = inputItem.value.trim();
+
+    if (newItem !== "") {
+        stack.push(newItem);
+
+        const newBox = document.createElement("div");
+        newBox.className = "stack-box";
+        newBox.innerText = newItem;
+        newBox.style.animation = `fadeIn 0.5s`;
+        newBox.id = `box${++boxIndex}`;
+
+        document.querySelector(".stack").appendChild(newBox);
+        inputItem.value = ""; // Clear the input field
+
+        updateTopElement();
+    }
+});
+
+document.getElementById("popBtn").addEventListener("click", function () {
+    if (stack.length === 0) return;
+
+    stack.pop();
+    const removedBox = document.getElementById(`box${boxIndex--}`);
+    removedBox.style.animation = `fadeOut 0.5s`;
+
+    setTimeout(() => {
+        removedBox.remove();
+        updateTopElement();
+    }, 500);
+});
+
+function updateTopElement() {
+    const topElement = stack.length > 0 ? stack[stack.length - 1] : "Underflow!!";
+    document.getElementById("topElement").innerText = `Top Element: ${topElement}`;
+}
+
+    </script>
+</html>
